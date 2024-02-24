@@ -4,12 +4,32 @@ from .models import hotel,Image,user,chambres,booking
 from flask import jsonify,request
 from flask_migrate import Migrate
 from flask_jwt_extended import create_access_token ,get_jwt_identity ,unset_jwt_cookies,jwt_required,JWTManager
-
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 app.config["JWT_SECRET_KEY"] = os.environ["APP_SUPER_KEY"] 
 migrate = Migrate(app, db)
 jwt = JWTManager(app)
+
+##############
+#   swagger   #
+##############
+
+
+SWAGGER_URL = '/api/docs'
+API_URL = '/static/swagger.json'
+
+# Call factory function to create our blueprint
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  
+    API_URL,
+    config={
+        'app_name': "Test application"
+    },
+)
+
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+
 
 ##############
 #   images   #
@@ -121,7 +141,7 @@ def delete_hotel(id):
         hotel_obj = hotel.query.get(id)
         if hotel_obj is None:
             return jsonify({'error': 'hotel not found'}), 404
-        images = Image.query.filter_by(hotel_id=hotel_id)
+        images = Image.query.filter_by(hotel_id=hotel_obj.id)
         for image in images:
             db.session.delete(image)
         db.session.delete(hotel_obj)
@@ -205,7 +225,7 @@ def get_user():
         users = user.query.all()
         return jsonify([user.to_json() for user in users]) , 200
     else:
-        return user.query.get(user_logged["id"]).to_json() , 200
+        return jsonify([user.query.get(user_logged["id"]).to_json()]) , 200
 
 @app.route('/user', methods=['POST'])
 def create_user():
@@ -249,6 +269,7 @@ def delete_user():
     return jsonify({'result': True}), 200
 
 @app.route("/logout", methods=["POST"])
+@jwt_required()
 def logout():
     response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
@@ -277,20 +298,24 @@ def login():
 def get_booking():
     user_logged = get_jwt_identity()
     if user_logged["role"] == "admin":
-        id=user.query.filter_by(email=request.json.get('email')).first().id
-        bookings = booking.query.filter_by(user_id=id)
+        if request.args.get('email'):
+            id=user.query.filter_by(email=request.args.get('email')).first().id
+            bookings = booking.query.filter_by(user_id=id)
+        else:
+            bookings =booking.query.all()
     else:
         bookings = booking.query.filter_by(user_id=user_logged["id"])
 
     return jsonify([booking.to_json() for booking in bookings]) , 200
 
 @app.route('/booking', methods=['POST'])
+@jwt_required()
 def create_booking():
     if not request.json:
         return jsonify({'error': 'json not found'}), 400
     booking_obj = booking(
         chambre_id=request.json.get('chambre_id'),
-        user_id=request.json.get('user_id'),
+        user_id=get_jwt_identity()["id"],
         datein=request.json.get('datein'),# format 1987-01-17
         dateout=request.json.get('dateout')# format 1987-01-17
     )

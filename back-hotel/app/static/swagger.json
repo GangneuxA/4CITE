@@ -1,0 +1,992 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Hotel Booking API",
+    "description": "An API for managing hotels, rooms, users, and bookings"
+  },
+  "tags": [
+    {
+      "name": "images",
+      "description": "Operations about images"
+    },
+    {
+      "name": "hotel",
+      "description": "Operations about hotel"
+    },
+    {
+      "name": "chambres",
+      "description": "Operations about chambres"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    },
+    {
+      "name": "booking",
+      "description": "Operations about booking"
+    }
+  ],
+  "paths": {
+    "/image/{hotel_id}": {
+      "get": {
+        "summary": "Get images of a hotel",
+        "tags": [
+          "images"
+        ],
+        "parameters": [
+          {
+            "name": "hotel_id",
+            "in": "path",
+            "description": "ID of the hotel to get images for",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Image"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hotel not found"
+          }
+        }
+      }
+    },
+    "/image": {
+      "post": {
+        "summary": "Upload an image for a hotel",
+        "tags": [
+          "images"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "hotel_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "ID of the hotel to upload image for"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Image file to upload"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Image uploaded successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "You have not the permission for this"
+          }
+        }
+      }
+    },
+    "/image/{hotel_id}/{image_id}": {
+      "delete": {
+        "summary": "Delete an image of a hotel",
+        "tags": [
+          "images"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "hotel_id",
+            "in": "path",
+            "description": "ID of the hotel",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "description": "ID of the image to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image deleted successfully"
+          },
+          "404": {
+            "description": "You have not the permission for this or Image not found for the specified hotel"
+          }
+        }
+      }
+    },
+    "/hotel": {
+      "get": {
+        "summary": "Get hotels",
+        "tags": [
+          "hotel"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of hotels returned",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Hotel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new hotel",
+        "tags": [
+          "hotel"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HotelInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Hotel created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "You have not the permission for this"
+          }
+        }
+      }
+    },
+    "/hotel/{id}": {
+      "put": {
+        "summary": "Update a hotel",
+        "tags": [
+          "hotel"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the hotel to update",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HotelInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hotel updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "You have not the permission for this or Hotel not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a hotel",
+        "tags": [
+          "hotel"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the hotel to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hotel deleted successfully"
+          },
+          "404": {
+            "description": "You have not the permission for this or Hotel not found"
+          }
+        }
+      }
+    },
+    "/chambres": {
+      "get": {
+        "summary": "Get chambres",
+        "tags": [
+          "chambres"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of chambres returned",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Chambre"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new chambre",
+        "tags": [
+          "chambres"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChambreInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Chambre created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "You have not the permission for this"
+          }
+        }
+      }
+    },
+    "/chambres/{id}": {
+      "put": {
+        "summary": "Update a chambre",
+        "tags": [
+          "chambres"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the chambre to update",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChambreEdit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chambre updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "You have not the permission for this or Chambre not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a chambre",
+        "tags": [
+          "chambres"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the chambre to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chambre deleted successfully"
+          },
+          "404": {
+            "description": "You have not the permission for this or Chambre not found"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "Get users",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserInput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new user",
+        "tags": [
+          "user"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Usercreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "put": {
+        "summary": "Update a user",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to update",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Usercedit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "User login",
+        "tags": [
+          "user"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "summary": "User logout",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logout successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/booking": {
+      "get": {
+        "summary": "Get bookings",
+        "tags": [
+          "booking"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "User email (optional only admin)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new booking",
+        "tags": [
+          "booking"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Booking created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/booking/{id}": {
+      "put": {
+        "summary": "Update a booking",
+        "tags": [
+          "booking"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the booking to update",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingEdit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Booking updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Booking not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a booking",
+        "tags": [
+          "booking"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the booking to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking deleted successfully"
+          },
+          "404": {
+            "description": "Booking not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Image": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "hotel_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "Hotel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "HotelInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "UserInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "pseudo": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "Usercreate": {
+        "type": "object",
+        "properties": {
+          "pseudo": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Usercedit": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "pseudo": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "Booking": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "chambre_id": {
+            "type": "integer"
+          },
+          "user_id": {
+            "type": "integer"
+          },
+          "datein": {
+            "type": "string",
+            "format": "date"
+          },
+          "dateout": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "BookingInput": {
+        "type": "object",
+        "properties": {
+          "chambre_id": {
+            "type": "integer"
+          },
+          "datein": {
+            "type": "string",
+            "format": "date"
+          },
+          "dateout": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "BookingEdit": {
+        "type": "object",
+        "properties": {
+          "datein": {
+            "type": "string",
+            "format": "date"
+          },
+          "dateout": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "Chambre": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "numero": {
+            "type": "string"
+          },
+          "nb_personne": {
+            "type": "integer"
+          },
+          "hotel_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "ChambreInput": {
+        "type": "object",
+        "properties": {
+          "numero": {
+            "type": "string"
+          },
+          "nb_personne": {
+            "type": "integer"
+          },
+          "hotel_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "ChambreEdit": {
+        "type": "object",
+        "properties": {
+          "numero": {
+            "type": "string"
+          },
+          "nb_personne": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
