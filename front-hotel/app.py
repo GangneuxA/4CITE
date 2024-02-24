@@ -1,5 +1,6 @@
 import datetime
-from flask import Flask, render_template
+from flask import Flask, flash, redirect, render_template, request, url_for
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
 app = Flask(__name__)
 
@@ -12,6 +13,10 @@ def home():
 def login():
     return render_template('login.html', utc_dt=datetime.datetime.utcnow())
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html', utc_dt=datetime.datetime.utcnow())
+    if request.method == 'POST':
+        email = request.form.get("email")
+        print(email)
+        return redirect(url_for('login'))
+    return render_template('register.html')

@@ -1,3 +1,4 @@
 flask 
 datetime
 python-dotenv
+wtforms
