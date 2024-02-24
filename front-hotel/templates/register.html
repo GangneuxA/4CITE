@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+</head>
+<body>
+    <form class="ui form" action="http://localhost:5001/home" method="post">
+        <div class="field">
+          <label>Pseudo</label>
+          <input type="text" name="pseudo" placeholder="Pseudo">
+        </div>
+        <div class="field">
+            <label>email</label>
+            <input type="email" name="email" placeholder="example.example@example.fr">
+          </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="password">
+        </div>
+        <div class="field">
+            <label>Password</label>
+            <input type="password" name="verif_password" placeholder="verification_password">
+          </div>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="example">
+                <label>I agree to the Terms and Conditions</label>
+            </div>
+        </div>
+        <button class="ui button" type="submit">Submit</button>
+      </form>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
