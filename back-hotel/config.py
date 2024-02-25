@@ -1,15 +1,16 @@
 #config.py
 import os
+from dotenv import load_dotenv
 
 class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    
+    load_dotenv()
     @staticmethod
     def init_app(app):
         pass
 
 class DevelopmentConfig(Config):
-    DEBUG = True
+    TESTING = True
     SQLALCHEMY_DATABASE_URI = os.getenv("DEV_DATABASE_URL")
 
 class TestingConfig(Config):

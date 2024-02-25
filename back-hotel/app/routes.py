@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from flask_jwt_extended import create_access_token ,get_jwt_identity ,unset_jwt_cookies,jwt_required,JWTManager
 from flask_swagger_ui import get_swaggerui_blueprint
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+app = create_app(os.getenv('FLASK_ENV') or 'default')
 app.config["JWT_SECRET_KEY"] = os.environ["APP_SUPER_KEY"] 
 migrate = Migrate(app, db)
 jwt = JWTManager(app)

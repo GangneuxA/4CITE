@@ -41,20 +41,26 @@ pip install -r .\requirements.txt
 Create tables of database with 
 ```
 flask db upgrade
-```
-
-## si ca marche pas alexis fait ecris moi
+````
 
 Launch project with 
 ```
 flask run
 ```
 
-
 Api is available on http://localhost:5000/ 
 
-(comming) Api docs is available on http://localhost:5000/api/docs
+Api docs is available on http://localhost:5000/api/docs
 
+## Lauch test local API back 
+
+Enter in venv then go to folder back-hotel
+
+for the unittest lauch 
+```
+python -m unittest test.<Name of wish test>
+
+```
 
 ## installation front (requirement back)
 
