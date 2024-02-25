@@ -105,6 +105,8 @@ def create_hotel():
     if get_jwt_identity()["role"] == "admin":
         if not request.json:
             return jsonify({'error': 'json not found'}), 400
+        if not request.json.get('name') or not request.json.get('location') or not request.json.get('description'):
+            return jsonify({'error': 'missing parameter'}), 400
         hotel_obj = hotel(
             name=request.json.get('name'),
             location=request.json.get('location'),
@@ -157,12 +159,15 @@ def delete_hotel(id):
 
 @app.route("/chambres", methods=["GET"])
 def get_chambres():
-    if not request.args:
+    if not request.args.get('limit'):
         limit = 10
     else:
         limit = int(request.args.get('limit'))
-
-    chambres_list = chambres.query.order_by().limit(limit).all()
+    
+    if request.args.get('hotel_id'):
+            chambres_list = chambres.query.filter_by(hotel_id=request.args.get('hotel_id')).limit(limit).all()
+    else:
+        chambres_list = chambres.query.order_by().limit(limit).all()
     return jsonify([chambre.to_json() for chambre in chambres_list]) , 200
 
 @app.route('/chambres', methods=['POST'])

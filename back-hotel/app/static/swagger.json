@@ -308,6 +308,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "hotel_id",
+            "in": "query",
+            "description": "List of chambres hotel",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
