@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>login</title>
-</head>
-<body>
-    <form class="ui form" action="http://localhost:5001/home" method="post">
-        <div class="field">
-          <label>Pseudo</label>
-          <input type="text" name="pseudo" placeholder="Pseudo">
-        </div>
-        <div class="field">
-          <label>Password</label>
-          <input type="password" name="password" placeholder="password">
-        </div>
-        <button class="ui positive button" type="submit">login</button>
-      </form>
-</body>
-</html>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
-<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+{% extends 'home.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<form class="ui form" action="/login" method="post">
+  <div class="field">
+    <label>email</label>
+    <input type="email" name="email" placeholder="email">
+  </div>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" name="password" placeholder="password">
+  </div>
+  <button class="ui positive button" type="submit">login</button>
+</form>
+
+{% endblock %}
+  

@@ -2,3 +2,4 @@ flask
 datetime
 python-dotenv
 wtforms
+requests

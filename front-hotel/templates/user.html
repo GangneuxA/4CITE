@@ -1,0 +1,32 @@
+{% extends 'home.html' %}
+
+{% block title %}User{% endblock %}
+
+{% block content %}
+
+<div class="ui container">
+    <h1>Liste des Utilisateurs</h1>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Pseudo</th>
+                <th>Email</th>
+                <th>Rôle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Utilisateur1</td>
+                <td>user1@example.com</td>
+                <td>Utilisateur</td>
+            </tr>
+            <tr>
+                <td>Admin1</td>
+                <td>admin1@example.com</td>
+                <td>Administrateur</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
