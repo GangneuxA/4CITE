@@ -230,7 +230,9 @@ def get_user():
 @app.route('/user', methods=['POST'])
 def create_user():
     if not request.json:
-        return jsonify({'error': 'json not found'}), 400
+        return jsonify({'error': 'json not found'}), 415
+    if not request.json.get('pseudo') or not request.json.get('email') or not request.json.get('password'):
+        return jsonify({'error': 'missing parameter'}), 400
     user_obj = user(
         pseudo=request.json.get('pseudo'),
         email=request.json.get('email'),
@@ -251,7 +253,8 @@ def update_user(id):
             return jsonify({'error': 'user not found'}), 404
         user_obj.pseudo = request.json.get('name', user_obj.pseudo)
         user_obj.email = request.json.get('email', user_obj.email)
-        user_obj.set_password(request.json.get('password'))
+        if request.json.get('password') and request.json.get('password') != "":
+            user_obj.set_password(request.json.get('password'))
         db.session.commit()
         return jsonify(user_obj.to_json()), 200
     else: 
@@ -273,7 +276,7 @@ def delete_user():
 def logout():
     response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
-    return response
+    return response, 200 
 
 @app.route("/login", methods=["POST"])
 def login():
