@@ -64,7 +64,7 @@ APP_SUPER_KEY="YourSuperKey"
 DEV_DATABASE_URL="mysql+pymysql://root:root@localhost:3306/bookhotel"
 ```
 
-for lauch the unit test 
+for lauch the test 
 ```
 python -m unittest test.<Name of wish test>
 ```
@@ -77,6 +77,9 @@ it exists this list of unit test
     * test_unitaire_image
 each model test GET, POST, PUT and DELETE
 
+For test of integration 
+    * test_integration
+there are tests of scenario using different object user, hotel, chambres, image and booking
 
 ## installation front (requirement back)
 
