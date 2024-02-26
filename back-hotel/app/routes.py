@@ -272,6 +272,8 @@ def delete_user():
     user_obj = user.query.get(id)
     if user_obj is None:
         return jsonify({'error': 'user not found'}), 404
+    for b in booking.query.filter_by(user_id=id).all():
+        db.session.delete(b)
     db.session.delete(user_obj)
     db.session.commit()
     return jsonify({'result': True}), 200
