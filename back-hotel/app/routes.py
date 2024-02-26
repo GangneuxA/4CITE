@@ -293,7 +293,7 @@ def login():
     
     if user_obj.check_password(request.json.get('password')):
         access_token = create_access_token(identity=user_obj.to_json())
-        return jsonify(access_token=access_token), 200
+        return jsonify({ "token": access_token, "email": user_obj.email, "role": user_obj.role }) , 200
     else:   
         return jsonify({'error': 'password is wrong'}), 400
     
