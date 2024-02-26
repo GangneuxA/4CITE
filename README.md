@@ -52,15 +52,31 @@ Api is available on http://localhost:5000/
 
 Api docs is available on http://localhost:5000/api/docs
 
-## Lauch test local API back 
+## Lauch test  on API hotel in local 
 
 Enter in venv then go to folder back-hotel
+then create .env in folder back-hotel and edit with your credentials of mysql and create your super key 
+```
+FLASK_APP = "bookhotel.py"
+FLASK_ENV = "development"
+FLASK_RUN_PORT = "5000"
+APP_SUPER_KEY="YourSuperKey"
+DEV_DATABASE_URL="mysql+pymysql://root:root@localhost:3306/bookhotel"
+```
 
-for the unittest lauch 
+for lauch the unit test 
 ```
 python -m unittest test.<Name of wish test>
-
 ```
+
+it exists this list of unit test
+    * test_unitaire_booking
+    * test_unitaire_hotel
+    * test_unitaire_chambres
+    * test_unitaire_user
+    * test_unitaire_image
+each model test GET, POST, PUT and DELETE
+
 
 ## installation front (requirement back)
 

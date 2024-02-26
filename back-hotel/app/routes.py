@@ -256,7 +256,7 @@ def update_user(id):
         user_obj = user.query.get(id)
         if user_obj is None:
             return jsonify({'error': 'user not found'}), 404
-        user_obj.pseudo = request.json.get('name', user_obj.pseudo)
+        user_obj.pseudo = request.json.get('pseudo', user_obj.pseudo)
         user_obj.email = request.json.get('email', user_obj.email)
         if request.json.get('password') and request.json.get('password') != "":
             user_obj.set_password(request.json.get('password'))

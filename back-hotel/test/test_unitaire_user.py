@@ -121,7 +121,7 @@ class TestUserPut(unittest.TestCase):
             token = self.login_user('test@example.com', 'password')
 
             updated_data = {
-                'name': 'updated_name',
+                'pseudo': 'updated_name',
                 'email': 'updated@example.com',
                 'password': 'updated_password'
             }
@@ -132,7 +132,7 @@ class TestUserPut(unittest.TestCase):
             db.session.commit()
 
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(updated_user.pseudo, updated_data['name'])
+            self.assertEqual(updated_user.pseudo, updated_data['pseudo'])
             self.assertEqual(updated_user.email, updated_data['email'])
             self.assertTrue(updated_user.check_password(updated_data['password']))
 
@@ -151,7 +151,7 @@ class TestUserPut(unittest.TestCase):
             token = self.login_user('other@example.com', 'password')
 
             updated_data = {
-                'name': 'updated_name',
+                'pseudo': 'updated_name',
                 'email': 'updated@example.com',
                 'password': 'updated_password'
             }
@@ -173,7 +173,7 @@ class TestUserPut(unittest.TestCase):
             db.session.commit()
 
             updated_data = {
-                'name': 'updated_name',
+                'pseudo': 'updated_name',
                 'email': 'updated@example.com',
                 'password': 'updated_password'
             }
