@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block content %}
+
+<div class="ui container">
+    <h1>List of Users</h1>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Pseudo</th>
+                <th>Email</th>
+                <th>Rôle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.pseudo }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

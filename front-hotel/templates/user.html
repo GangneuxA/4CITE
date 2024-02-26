@@ -1,32 +1,29 @@
-{% extends 'home.html' %}
+{% extends 'base.html' %}
 
 {% block title %}User{% endblock %}
 
 {% block content %}
 
 <div class="ui container">
-    <h1>Liste des Utilisateurs</h1>
-    <table class="ui celled table">
-        <thead>
-            <tr>
-                <th>Pseudo</th>
-                <th>Email</th>
-                <th>Rôle</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Utilisateur1</td>
-                <td>user1@example.com</td>
-                <td>Utilisateur</td>
-            </tr>
-            <tr>
-                <td>Admin1</td>
-                <td>admin1@example.com</td>
-                <td>Administrateur</td>
-            </tr>
-        </tbody>
-    </table>
+    <h1>User Profile</h1>
+    <div class="ui segment">
+        <div class="ui grid">
+            <div class="twelve wide column">
+                <h3>Pseudo: {{ session.pseudo }}</h3>
+                <p>Email: {{ session.email }}</p>
+                <p>Role: {{ session.role }}</p>
+            </div>
+            <div class="four wide column">
+                <button onclick="window.location.href = '/change_user'" class="ui icon primary button" >
+                    <i class="pencil alternate icon"></i>
+                    Modifier
+                </button>
+                <form class="ui form" action="/delete_user" method="post">
+                    <button type="submit" class="ui red button">delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
