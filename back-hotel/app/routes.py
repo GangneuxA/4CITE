@@ -307,8 +307,8 @@ def get_booking():
     user_logged = get_jwt_identity()
     if user_logged["role"] == "admin":
         if request.args.get('email'):
-            id=user.query.filter_by(email=request.args.get('email')).first().id
-            bookings = booking.query.filter_by(user_id=id)
+            user_obj = user.query.filter_by(email=request.args.get('email')).first()
+            bookings = booking.query.filter_by(user_id=user_obj.id).all()
         else:
             bookings =booking.query.all()
     else:

@@ -11,7 +11,7 @@ class TestbookingGet(unittest.TestCase):
         self.admin_token = self.create_admin_user(name="admin", mail="admin@example.com", role="admin")
         self.user_token = self.create_admin_user(name="user", mail="user@example.com", role="user")
         self.hotel_obj = hotel(name="Hotel ABC", location="City XYZ", description="A luxurious hotel")
-        db.session.add(hotel_obj)
+        db.session.add(self.hotel_obj)
         db.session.commit()
 
         self.chambre1 = chambres(numero="101", nb_personne=2, hotel_id=self.hotel_obj.id)
@@ -33,16 +33,16 @@ class TestbookingGet(unittest.TestCase):
         db.session.delete(self.chambre2)
         db.session.delete(self.hotel_obj)
         db.session.commit()
-        
+
     def test_get_booking_as_admin(self):
         with self.client:
             user1 = user.query.filter_by(email="user@example.com").first()
-            user2 = user(ename="user",mail="user2@example.com", role="user")
+            user2 = user(pseudo="user",email="user2@example.com", role="user")
             user2.set_password('password')
             db.session.add(user2)
             db.session.commit()
-            booking1 = booking(user_id=user1.id, room_id=1, start_date="2024-03-01", end_date="2024-03-05")
-            booking2 = booking(user_id=user2.id, room_id=2, start_date="2024-03-10", end_date="2024-03-15")
+            booking1 = booking(user_id=user1.id, chambre_id=self.chambre1.id, datein="2024-03-01", dateout="2024-03-05")
+            booking2 = booking(user_id=user2.id, chambre_id=self.chambre2.id, datein="2024-03-10", dateout="2024-03-15")
             db.session.add_all([booking1, booking2])
             db.session.commit()
             response = self.client.get('/booking', headers={'Authorization': f'Bearer {self.admin_token}'})
@@ -59,14 +59,12 @@ class TestbookingGet(unittest.TestCase):
 
     def test_get_booking_for_specific_user_as_admin(self):
         with self.client:
-            user = user.query.filter_by(email="user@example.com").first()
-            db.session.add(user)
-            db.session.commit()
-            booking1 = booking(user_id=user.id, room_id=1, start_date="2024-03-01", end_date="2024-03-05")
-            booking2 = booking(user_id=user.id, room_id=2, start_date="2024-03-10", end_date="2024-03-15")
+            user1 = user.query.filter_by(email="user@example.com").first()
+            booking1 = booking(user_id=user1.id, chambre_id=self.chambre1.id, datein="2024-03-01", dateout="2024-03-05")
+            booking2 = booking(user_id=user1.id, chambre_id=self.chambre2.id, datein="2024-03-10", dateout="2024-03-15")
             db.session.add_all([booking1, booking2])
             db.session.commit()
-            response = self.client.get(f'/booking?email={user.email}', headers={'Authorization': f'Bearer {self.admin_token}'})
+            response = self.client.get(f'/booking?email={user1.email}', headers={'Authorization': f'Bearer {self.admin_token}'})
             data = response.get_json()
             
             db.session.delete(booking1)
@@ -79,11 +77,9 @@ class TestbookingGet(unittest.TestCase):
 
     def test_get_booking_as_user(self):
         with self.client:
-            user = user.query.filter_by(email="user@example.com").first()
-            db.session.add(user)
-            db.session.commit()
-            booking1 = booking(user_id=user.id, room_id=1, start_date="2024-03-01", end_date="2024-03-05")
-            booking2 = booking(user_id=user.id, room_id=2, start_date="2024-03-10", end_date="2024-03-15")
+            user1 = user.query.filter_by(email="user@example.com").first()
+            booking1 = booking(user_id=user1.id, chambre_id=self.chambre1.id, datein="2024-03-01", dateout="2024-03-05")
+            booking2 = booking(user_id=user1.id, chambre_id=self.chambre2.id, datein="2024-03-10", dateout="2024-03-15")
             db.session.add_all([booking1, booking2])
             db.session.commit()
             response = self.client.get('/booking', headers={'Authorization': f'Bearer {self.user_token}'})
