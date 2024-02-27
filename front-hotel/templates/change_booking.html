@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Change Booking{% endblock %}
+
+{% block content %}
+
+<form class="ui form" action="/change_booking" method="post">
+    <div class="field">
+        <label>Date In</label>
+        <input type="text" name="datein" placeholder="year-month-day">
+    </div>
+    <div class="field">
+        <label>Date Out</label>
+        <input type="text" name="dateout" placeholder="year-month-day">
+    </div>
+    <input type="hidden" name="booking_id" value="{{reservation.id}}">
+    <button class="ui button" type="submit">Submit</button>
+</form>
+
+{% endblock %}
+  
