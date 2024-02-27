@@ -110,6 +110,34 @@ class Testintegration(unittest.TestCase):
         db.session.delete(hotel_response)
         db.session.delete(user_reponse)
         db.session.commit()
+
+    def test_register_and_promote_to_employee_integration(self):
+        user_data = {'pseudo': 'test_user', 'email': 'employee@example.com', 'password': 'password'}
+        response = self.app.post('/user', json=user_data)
+        self.assertEqual(response.status_code, 201)
+        user_data = {'pseudo': 'test_user', 'email': 'user3@example.com', 'password': 'password'}
+        response = self.app.post('/user', json=user_data)
+        self.assertEqual(response.status_code, 201)
+
+        user_obj= user.query.filter_by(email='employee@example.com').first()
+        user_obj.role= "employee"
+        db.session.commit()
+
+        admin_login_data = {'email': 'employee@example.com', 'password': 'password'}
+        admin_response = self.app.post('/login', json=admin_login_data)
+        self.assertEqual(admin_response.status_code, 200)
+        admin_access_token = admin_response.json['access_token']
+
+        user_response = self.app.get('/user', headers={'Authorization': f'Bearer {admin_access_token}'})
+        self.assertEqual(user_response.status_code, 200)
+        self.assertTrue(isinstance(user_response.json, list))
+
+        employee_reponse = user.query.filter_by(email='employee@example.com').first()
+        user_reponse = user.query.filter_by(email='user3@example.com').first()
+
+        db.session.delete(employee_reponse)
+        db.session.delete(user_reponse)
+        db.session.commit()
 if __name__ == '__main__':
     unittest.main()
     app.run()
