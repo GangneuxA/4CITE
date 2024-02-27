@@ -67,7 +67,8 @@ jobs:
         python -m unittest test.test_unitaire_hotel
     - name: integration Test with pytest
       run: |
-        python -m unittest test.test_integratio
+        cd back-hotel
+        python -m unittest test.test_integration
     - name: deploy
       run: |
         echo "deploy back api"
