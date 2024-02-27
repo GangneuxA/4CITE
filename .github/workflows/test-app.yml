@@ -20,8 +20,8 @@ jobs:
       FLASK_ENV: development
       FLASK_PORT: 5000
       APP_SUPER_KEY: youtube
-      DEV_DATABASE_URL: mysql+pymysql://user:root@localhost:3306/bookhotel
-      TEST_DATABASE_URL: mysql+pymysql://user:root@localhost:3306/bookhotel
+      DEV_DATABASE_URL: mysql+pymysql://root:root@127.0.0.1:3306/bookhotel
+      TEST_DATABASE_URL: mysql+pymysql://root:root@127.0.0.1:3306/bookhotel
     services:
       mysql:
         image: mysql:8.0
