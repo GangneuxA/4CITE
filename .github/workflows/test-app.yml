@@ -59,7 +59,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: unit Test with pytest
       run: |
-        pwd
+        cd back-hotel
         python -m unittest test.test_unitaire_image
         python -m unittest test.test_unitaire_user
         python -m unittest test.test_unitaire_booking
