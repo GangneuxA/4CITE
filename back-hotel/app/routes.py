@@ -146,6 +146,10 @@ def delete_hotel(id):
         images = Image.query.filter_by(hotel_id=hotel_obj.id)
         for image in images:
             db.session.delete(image)
+        for c in chambres.query.filter_by(hotel_id=id).all():
+            for b in booking.query.filter_by(chambre_id=c.id).all():
+                db.session.delete(b)
+            db.session.delete(c)
         db.session.delete(hotel_obj)
         db.session.commit()
         return jsonify({'result': True}), 200
@@ -211,6 +215,9 @@ def delete_chambres(id):
         chambres_obj = chambres.query.get(id)
         if chambres_obj is None:
             return jsonify({'error': 'hotel not found'}), 404
+        
+        for b in booking.query.filter_by(chambre_id=id).all():
+             db.session.delete(b)
         db.session.delete(chambres_obj)
         db.session.commit()
         return jsonify({'result': True}), 200
