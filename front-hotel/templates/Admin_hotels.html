@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin_hotels{% endblock %}
+
+{% block content %}
+
+<div class="ui container">
+    <h1>Liste des Hôtels</h1>
+
+    <div class="ui divided items">
+        {% for hotel in hotels %}
+        <div class="item">
+            <div class="content">
+                <a class="header">{{ hotel.name }}</a>
+                <div class="description">
+                    <p>{{ hotel.location }}</p>
+                    <p>{{ hotel.description }}</p>
+                </div>
+                <!-- Formulaire pour le bouton Modifier -->
+                <form action="/change_hotel" method="get" style="display: inline;">
+                    <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
+                    <button class="ui primary button" type="submit">Modifier</button>
+                </form>
+
+                <!-- Formulaire pour le bouton Supprimer -->
+                <form action="/delete_hotel" method="post" style="display: inline;">
+                    <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
+                    <button class="ui red button" type="submit">Supprimer</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button onclick="window.location.href = '/hotel'" class="ui button">Create New Hotel</button>
+</div>
+
+{% endblock %}

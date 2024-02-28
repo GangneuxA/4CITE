@@ -266,3 +266,126 @@ def delete_booking():
         response = requests.delete(url=url, headers=HEADERS)
 
         return redirect(url_for('booking'))
+    
+@app.route('/admin_hotels', methods=['GET','POST'])
+def admin_hotels():
+    if request.method == 'GET':
+
+        url = URL + "hotel"
+
+        response = requests.get(url=url, headers=HEADERS)
+        hotels=response.json()
+
+        return render_template('Admin_hotels.html', hotels=hotels)
+    
+@app.route('/hotel', methods=['GET','POST'])
+def hotel():
+    if request.method == 'GET':
+        return render_template('hotel.html')
+    if request.method == 'POST':
+        
+        url = URL + "hotel"
+
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        body = {"name": request.form.get("name"),
+                "description": request.form.get("description"),
+                "location": request.form.get("location")}
+        
+        response = requests.post(url=url, json=body, headers=HEADERS)
+
+        if response.status_code == 201:
+            return redirect(url_for('admin_hotels'))
+        else: 
+            return redirect(url_for('error'))
+ 
+    
+@app.route('/change_hotel', methods=['GET','POST'])
+def change_hotel():
+    if request.method == 'GET':
+        return render_template('change_hotel.html', hotel_id=request.args.get("hotel_id"))
+    if request.method == 'POST':
+
+        url = URL + "hotel/" + request.form.get("hotel_id")
+        
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        body = {}
+        if request.form.get("name") != "":
+            body.update({"name": request.form.get("name")})
+        if request.form.get("description") != "":
+            body.update({"description": request.form.get("description")})
+        if request.form.get("location") != "":
+            body.update({"location": request.form.get("location")})
+
+        response = requests.put(url=url,json=body, headers=HEADERS)
+
+        return redirect(url_for('admin_hotels'))
+    
+@app.route('/delete_hotel', methods=['POST'])
+def delete_hotel():
+    if request.method == 'POST':
+
+        url = URL + "hotel/" + request.form.get("hotel_id")
+
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        response = requests.delete(url=url, headers=HEADERS)
+
+        return redirect(url_for('admin_hotels'))
+    
+
+@app.route('/admin_bookings', methods=['GET'])
+def admin_bookings():
+    if request.method == 'GET':
+
+        url = URL + "booking"
+
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        response = requests.get(url=url, headers=HEADERS)
+        reservations=response.json()
+
+        return render_template('Admin_bookings.html', reservations=reservations)
+    
+@app.route('/images', methods=['GET','POST'])
+def images():
+    if request.method == 'GET':
+
+        url = URL + "hotel"
+
+        response = requests.get(url=url, headers=HEADERS)
+        hotels=response.json()
+
+        images = []
+        for hotel in hotels:
+
+            url = URL + "image/" + str(hotel["id"])
+            response = requests.get(url=url, headers=HEADERS)
+
+            images.append(response.json())
+
+        return render_template('images.html', hotels=hotels, images=images)
+    
+    if request.method == 'POST':
+        url = URL + "image" 
+
+        body = {}
+        file = request.files['image']
+        image_name = file.filename  
+        body.update({"image":(file.read(), image_name)})
+        body.update({"hotel_id":request.form.get("hotel_id")})
+
+        
+        
+        headers = {}
+        headers.update({"Authorization": "Bearer "+session['access_token']})
+        headers.update({"Content-Type" : "multipart/form-data"})
+        headers.update({"accept": "*/*"})
+        
+        print(url)
+        print(headers)
+        
+        response = requests.post(url=url, data=body, headers=headers)
+        
+        return redirect(url_for('images'))

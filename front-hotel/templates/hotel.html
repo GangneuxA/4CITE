@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Hotel{% endblock %}
+
+{% block content %}
+
+    <form class="ui form" action="/hotel" method="post">
+        <div class="field">
+          <label>name</label>
+          <input type="text" name="name" placeholder="name">
+        </div>
+        <div class="field">
+            <label>description</label>
+            <input type="text" name="description" placeholder="description">
+        </div>
+        <div class="field">
+            <label>location</label>
+            <input type="text" name="location" placeholder="location">
+        </div>
+        <button class="ui button" type="submit">Submit</button>
+    </form>
+
+{% endblock %}
+  

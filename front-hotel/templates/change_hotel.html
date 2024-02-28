@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Change Hotel{% endblock %}
+
+{% block content %}
+
+<form class="ui form" action="/change_hotel" method="post">
+    <div class="field">
+        <label>Name</label>
+        <input type="text" name="name" placeholder="">
+    </div>
+    <div class="field">
+        <label>Description</label>
+        <input type="text" name="description" placeholder="">
+    </div>
+    <div class="field">
+        <label>location</label>
+        <input type="text" name="location" placeholder="">
+    </div>
+    <input type="hidden" name="hotel_id" value="{{hotel_id}}">
+    <button class="ui button" type="submit">Submit</button>
+</form>
+
+{% endblock %}
+  
