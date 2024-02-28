@@ -27,11 +27,39 @@ def is_administration():
 def base():
     return redirect(url_for('home'))
 
-@app.route('/home')
+@app.route('/home', methods=['GET','POST'])
 def home():
-    administration = is_administration()
-    authenticated = is_authenticated()
-    return render_template('home.html', authenticated=authenticated, administration=administration)
+    if request.method == 'GET':
+
+        administration = is_administration()
+        authenticated = is_authenticated()
+
+        url = URL + "hotel"
+
+        response = requests.get(url=url, headers=HEADERS)
+        hotels=response.json()
+
+        images = []
+        for hotel in hotels:
+
+            url = URL + "image/" + str(hotel["id"])
+            response = requests.get(url=url, headers=HEADERS)
+
+            images.append(response.json())
+        print(images)
+
+        url = URL + "chambres"
+
+        response = requests.get(url=url, headers=HEADERS)
+        rooms=response.json()
+
+        return render_template('home.html', authenticated=authenticated, administration=administration,hotels=hotels, images=images, rooms=rooms )
+    
+    if request.method == 'POST':
+
+        room_id = request.form.get("room_id")
+
+        return render_template('booking.html', room_id=room_id)
 
 @app.route('/error')
 def error():
@@ -46,8 +74,7 @@ def login():
                 "password": request.form.get("password")}
         
         response = requests.post(url=url, json=body, headers=HEADERS)
-        print(response.content)
-        print(response.json()["user"])
+
         if response.status_code == 200:
             session['access_token'] = response.json()["access_token"]
             session['email'] = response.json()["user"]["email"]
@@ -70,7 +97,7 @@ def logout():
     if response.status_code == 200:
         session.pop('authenticated', None)
         session.clear()
-        return render_template('home.html', utc_dt=datetime.datetime.utcnow())
+        return redirect(url_for('home'))
     else: 
         return redirect(url_for('error'))
 
@@ -165,5 +192,77 @@ def administration():
         else: 
             return redirect(url_for('error'))
 
+@app.route('/booking', methods=['GET','POST'])
+def booking():
+    if request.method == 'POST':
 
+        url = URL + "booking"
+
+        body = {}
+        body.update({"chambre_id":request.form.get("room_id")})
+        body.update({"user_id":session['id']})
+        body.update({"datein":request.form.get("datein")})
+        body.update({"dateout":request.form.get("dateout")})
+
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        response = requests.post(url=url, json=body, headers=HEADERS)
+
+        return redirect(url_for('booking'))
+
+    if request.method == 'GET':
+        administration = is_administration()
+        authenticated = is_authenticated()
+        if authenticated == True:
+            url = URL + "booking"
+
+            HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+            response = requests.get(url=url, headers=HEADERS)
+
+            if response.status_code == 200:
+                print(response.json())
+                return render_template('reservations.html', reservations=response.json(), authenticated=authenticated, administration=administration )
+            else: 
+                return redirect(url_for('error'))
+        else:
+            return render_template('login.html')
     
+@app.route('/change_booking', methods=['GET', 'POST'])
+def change_booking():
+    administration = is_administration()
+    authenticated = is_authenticated()
+    if request.method == 'GET':     
+
+        reservation = json.loads(request.args.get("booking").replace("\'", "\"")) 
+        
+        return render_template('change_booking.html',reservation=reservation, authenticated=authenticated, administration=administration)
+    if request.method == 'POST':
+
+        body = {}
+        if request.form.get("datein") != "":
+            body.update({"datein": request.form.get("datein")})
+        if request.form.get("dateout") != "":
+            body.update({"dateout": request.form.get("dateout")})
+        
+        url = URL + "booking/" + request.form.get("booking_id")
+
+        print(request.form.get("booking_id"))
+
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        response = requests.put(url=url, json=body, headers=HEADERS)
+        print("######")
+        return redirect(url_for('booking'))
+    
+@app.route('/delete_booking', methods=['POST'])
+def delete_booking():
+    if request.method == 'POST':
+
+        url = URL + "booking/" + request.form.get("booking_id")
+
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        response = requests.delete(url=url, headers=HEADERS)
+
+        return redirect(url_for('booking'))

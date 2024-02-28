@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking{% endblock %}
+
+{% block content %}
+
+
+<div class="ui container">
+    <h1> Booking for room number :{{ room_id }} </h1>
+    <form class="ui form" action="/booking" method="post">
+        <div class="field">
+            <label>Date In</label>
+            <input type="text" name="datein" placeholder="year-month-day">
+        </div>
+        <div class="field">
+            <label>Date Out</label>
+            <input type="text" name="dateout" placeholder="year-month-day">
+        </div>
+        <input type="hidden" name="room_id" value="{{ room_id }}">
+        <button class="ui button primary" type="submit">Booking</button>
+    </form>
+</div>
+{% endblock %}

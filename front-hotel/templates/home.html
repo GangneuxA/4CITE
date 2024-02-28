@@ -4,6 +4,51 @@
 
 {% block content %}
 
-<h1>welcome to the home page</h1>
+<div class="ui container">
+    <h1>Liste des Hôtels</h1>
+    <div class="ui divided items">
+        {% for hotel in hotels %}
+            <div class="item">
+                {% for image in images %}
+                    {% if image.hotel_id == hotel.id %}
+                        <div class="image">
+                            <img src="data:image/jpeg;base64,{{ image.data }}" alt="{{ image.name }}"> 
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <div class="content">
+                    <a class="header">{{ hotel.name }}</a>
+                    <div class="meta">
+                        <span>{{ hotel.location }}</span>
+                    </div>
+                    <div class="description">
+                        <p>{{ hotel.description }}</p>
+                    </div>
+                    <div class="ui list">
+                        {% for room in rooms %}
+                            {% if hotel.id == room.hotel_id %}
+                                <div class="item">
+                                    <div class="content">
+                                        <a class="header">room number : {{ room.numero }}</a>
+                                        <div class="meta">
+                                            <span>room for {{ room.nb_personne }}</span>
+                                        </div>
+                                        <div class="ui buttons">
+                                            <form class="ui form" action="/home" method="post">
+                                              <input type="hidden" name="room_id" value="{{ room.id }}">  
+                                              <button type="submit" class="ui primary button">Booking</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
 
 {% endblock %}
