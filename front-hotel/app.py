@@ -13,16 +13,6 @@ URL = "http://localhost:5000/"
 HEADERS = {"accept":"*/*",
            "Content-Type": "application/json"}
 
-def is_authenticated():
-    return session.get('authenticated', False)
-
-def is_administration():
-    try:
-        role = session["role"]
-        return role in ["admin", "employee"]
-    except KeyError:
-        return False
-
 @app.route('/')
 def base():
     return redirect(url_for('home'))
@@ -31,29 +21,24 @@ def base():
 def home():
     if request.method == 'GET':
 
-        administration = is_administration()
-        authenticated = is_authenticated()
-
         url = URL + "hotel"
 
         response = requests.get(url=url, headers=HEADERS)
         hotels=response.json()
 
-        images = []
         for hotel in hotels:
 
             url = URL + "image/" + str(hotel["id"])
             response = requests.get(url=url, headers=HEADERS)
 
-            images.append(response.json())
-        print(images)
+            hotel["image"] = response.json()
 
         url = URL + "chambres"
 
         response = requests.get(url=url, headers=HEADERS)
         rooms=response.json()
 
-        return render_template('home.html', authenticated=authenticated, administration=administration,hotels=hotels, images=images, rooms=rooms )
+        return render_template('home.html', hotels=hotels, rooms=rooms )
     
     if request.method == 'POST':
 
@@ -121,30 +106,28 @@ def register():
 @app.route('/user', methods=['GET'])
 def user():
     if request.method == 'GET':
-        administration = is_administration()
-        authenticated = is_authenticated()
-        if authenticated == True:
-            url = URL + "user"
+        try:
+            if session['authenticated']:
+                url = URL + "user"
 
-            HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+                HEADERS.update({"Authorization": "Bearer "+session['access_token']})
 
-            response = requests.get(url=url, headers=HEADERS)
+                response = requests.get(url=url, headers=HEADERS)
 
-            if response.status_code == 200:
-                print(response.json())
-                return render_template('user.html', session=session, authenticated=authenticated, administration=administration )
-            else: 
-                return redirect(url_for('error'))
-        else:
+                if response.status_code == 200:
+                    print(response.json())
+                    return render_template('user.html')
+                else: 
+                    return redirect(url_for('error'))
+        except:
             return render_template('login.html')
     
 
 @app.route('/change_user', methods=['GET', 'POST'])
 def change_user():
-    administration = is_administration()
-    authenticated = is_authenticated()
+
     if request.method == 'GET':         
-        return render_template('change_user.html',session=session, authenticated=authenticated, administration=administration)
+        return render_template('change_user.html')
     if request.method == 'POST':
         
         body = {}
@@ -178,8 +161,7 @@ def delete_user():
 @app.route('/administration', methods=['GET'])
 def administration():
     if request.method == 'GET':
-        authenticated = is_authenticated()
-        administration = is_administration()
+
         url = URL + "user"
 
         HEADERS.update({"Authorization": "Bearer "+session['access_token']})
@@ -188,7 +170,7 @@ def administration():
 
         if response.status_code == 200:
             print(response.json())
-            return render_template('administration.html', session=session, authenticated=authenticated, administration=administration, users=response.json())
+            return render_template('administration.html', users=response.json())
         else: 
             return redirect(url_for('error'))
 
@@ -211,32 +193,30 @@ def booking():
         return redirect(url_for('booking'))
 
     if request.method == 'GET':
-        administration = is_administration()
-        authenticated = is_authenticated()
-        if authenticated == True:
-            url = URL + "booking"
+        try:
+            if session['authenticated'] == True:
+                url = URL + "booking"
 
-            HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+                HEADERS.update({"Authorization": "Bearer "+session['access_token']})
 
-            response = requests.get(url=url, headers=HEADERS)
+                response = requests.get(url=url, headers=HEADERS)
 
-            if response.status_code == 200:
-                print(response.json())
-                return render_template('reservations.html', reservations=response.json(), authenticated=authenticated, administration=administration )
-            else: 
-                return redirect(url_for('error'))
-        else:
+                if response.status_code == 200:
+                    print(response.json())
+                    return render_template('reservations.html', reservations=response.json())
+                else: 
+                    return redirect(url_for('error'))
+        except:
             return render_template('login.html')
     
 @app.route('/change_booking', methods=['GET', 'POST'])
 def change_booking():
-    administration = is_administration()
-    authenticated = is_authenticated()
+
     if request.method == 'GET':     
 
         reservation = json.loads(request.args.get("booking").replace("\'", "\"")) 
         
-        return render_template('change_booking.html',reservation=reservation, authenticated=authenticated, administration=administration)
+        return render_template('change_booking.html',reservation=reservation)
     if request.method == 'POST':
 
         body = {}
@@ -357,15 +337,14 @@ def images():
         response = requests.get(url=url, headers=HEADERS)
         hotels=response.json()
 
-        images = []
         for hotel in hotels:
 
             url = URL + "image/" + str(hotel["id"])
             response = requests.get(url=url, headers=HEADERS)
 
-            images.append(response.json())
+            hotel["image"] = response.json()
 
-        return render_template('images.html', hotels=hotels, images=images)
+        return render_template('images.html', hotels=hotels)
     
     if request.method == 'POST':
         url = URL + "image" 
@@ -389,3 +368,85 @@ def images():
         response = requests.post(url=url, data=body, headers=headers)
         
         return redirect(url_for('images'))
+    
+@app.route('/delete_image', methods=['POST'])
+def delete_image():
+    if request.method == 'POST':
+
+        url = URL + "image/" + request.form.get("hotel_id") + "/" + request.form.get("image_id")
+
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        response = requests.delete(url=url, headers=HEADERS)
+
+        return redirect(url_for('images'))
+    
+@app.route('/rooms', methods=['GET','POST'])
+def rooms():
+    if request.method == 'GET':
+
+        url = URL + "chambres"
+
+        response = requests.get(url=url, headers=HEADERS)
+        rooms=response.json()
+
+        url = URL + "hotel"
+
+        response = requests.get(url=url, headers=HEADERS)
+        hotels=response.json()
+
+        return render_template('Admin_rooms.html', rooms=rooms, hotels=hotels)
+    
+    if request.method == 'POST':
+
+        url = URL + "chambres"
+
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        body = {"numero": request.form.get("numero"),
+                "nb_personne": request.form.get("nb_personne"),
+                "hotel_id": request.form.get("hotel_id")}
+        
+        response = requests.post(url=url, json=body, headers=HEADERS)
+
+        if response.status_code == 201:
+            return redirect(url_for('rooms'))
+        else: 
+            return redirect(url_for('error'))
+
+@app.route('/change_room', methods=['GET','POST'])
+def change_room():
+    if request.method == 'GET':
+        return render_template('change_room.html', room_id=request.args.get("room_id"))
+    if request.method == 'POST':
+
+        url = URL + "chambres/" + request.form.get("room_id")
+        
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        body = {}
+        if request.form.get("number") != "":
+            body.update({"number": request.form.get("number")})
+        if request.form.get("nb_personne") != "":
+            body.update({"nb_personne": request.form.get("nb_personne")})
+
+        response = requests.put(url=url,json=body, headers=HEADERS)
+
+        return redirect(url_for('rooms'))
+    
+@app.route('/delete_room', methods=['POST'])
+def delete_room():
+    if request.method == 'POST':
+
+        url = URL + "chambres/" + request.form.get("room_id")
+
+        HEADERS.update({"Authorization": "Bearer "+session['access_token']})
+
+        response = requests.delete(url=url, headers=HEADERS)
+
+        return redirect(url_for('rooms'))
+
+@app.route('/create_room', methods=['GET'])
+def create_room():
+    if request.method == 'GET':
+        return render_template('room.html')

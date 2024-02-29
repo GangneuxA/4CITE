@@ -9,20 +9,18 @@
     <div class="ui divided items">
         {% for hotel in hotels %}
             <div class="item">
-                {% for image in images %}
-                    {% if image.hotel_id == hotel.id %}
-                        <div class="image">
-                            <img src="data:image/jpeg;base64,{{ image.data }}" alt="{{ image.name }}"> 
-                        </div>
-                        <div class="ui form">
-                            <form action="/delete_image" method="post">
-                                <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
-                                <input type="hidden" name="image_id" value="{{ image.id }}">
-                                <button class="ui red button" type="submit">delete</button>
-                            </form>
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                {% for data in hotel['image'] %}
+                    <div class="image">
+                        <img src="data:image/jpeg;base64,{{ data['data'] }}" alt=""> 
+                    </div>
+                    <div class="ui form">
+                        <form action="/delete_image" method="post">
+                            <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
+                            <input type="hidden" name="image_id" value="{{ data['id'] }}">
+                            <button class="ui red button" type="submit">delete</button>
+                        </form>
+                    </div>
+                {% endfor %}                    
                 <div class="content">
                     <a class="header">{{ hotel.name }}</a>
                 </div>

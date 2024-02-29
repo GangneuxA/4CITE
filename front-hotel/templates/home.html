@@ -9,13 +9,11 @@
     <div class="ui divided items">
         {% for hotel in hotels %}
             <div class="item">
-                {% for image in images %}
-                    {% if image.hotel_id == hotel.id %}
+                    {% for data in hotel['image'] %}
                         <div class="image">
-                            <img src="data:image/jpeg;base64,{{ image.data }}" alt="{{ image.name }}"> 
+                            <img src="data:image/jpeg;base64,{{ data['data'] }}" alt=""> 
                         </div>
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
                 <div class="content">
                     <a class="header">{{ hotel.name }}</a>
                     <div class="meta">
