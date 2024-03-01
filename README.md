@@ -9,7 +9,7 @@ our projet follow this shema
 
 create une database mysql.
 
-glone this project
+clone this project
 
 in root of project
 
@@ -41,7 +41,7 @@ pip install -r .\requirements.txt
 Create tables of database with 
 ```
 flask db upgrade
-````
+```
 
 Launch project with 
 ```
@@ -51,6 +51,41 @@ flask run
 Api is available on http://localhost:5000/ 
 
 Api docs is available on http://localhost:5000/api/docs
+
+
+## installation local API front (requirement back)
+
+Split the terminal and paste this following command :
+
+```
+Set-ExecutionPolicy Unrestricted -Scope Proces
+.\.venv\Scripts\activate
+```
+
+Next go to the front-hotel folder 
+
+create a .env in the folder and paste this variables : 
+
+```
+FLASK_APP = "app.py"
+FLASK_ENV = "development"
+FLASK_RUN_PORT = "5001"
+```
+
+Next install dependency with : 
+
+```
+pip install -r requirements.txt
+```
+
+And for finish juste do a :
+
+```
+Flask run
+```
+
+Front is available on http://localhost:5000/
+
 
 ## Lauch test  on API hotel in local 
 
@@ -80,11 +115,3 @@ each model test GET, POST, PUT and DELETE
 For test of integration 
     * test_integration
 there are tests of scenario using different object user, hotel, chambres, image and booking
-
-## installation front (requirement back)
-
-
-$FLASK_APP = "app.py"
-python -m venv .venv
-Set-ExecutionPolicy Unrestricted -Scope Proces
-.venv\Scripts\activate
