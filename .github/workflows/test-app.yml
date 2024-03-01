@@ -71,7 +71,7 @@ jobs:
         python -m unittest test.test_integration
     - name: prepare e2e test
       run: |
-        mysql --host 127.0.0.1 --user root -root bookhotel < bdd_test.sql
+        sudo mysql --host 127.0.0.1 --user root -root bookhotel < bdd_test.sql
     - name: deploy
       run: |
         echo "deploy back api"
