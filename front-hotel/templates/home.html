@@ -11,7 +11,7 @@
             <div class="item">
                     {% for data in hotel['image'] %}
                         <div class="image">
-                            <img src="data:image/jpeg;base64,{{ data['data'] }}" alt=""> 
+                            <img class="ui image" style="width: 200px; height: 150px;" src="data:image/jpeg;base64,{{ data['data'] }}" alt="">
                         </div>
                     {% endfor %}
                 <div class="content">

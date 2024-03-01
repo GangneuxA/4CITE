@@ -352,20 +352,17 @@ def images():
         body = {}
         file = request.files['image']
         image_name = file.filename  
-        body.update({"image":(file.read(), image_name)})
+        files = {'image': (image_name, file.read())}
         body.update({"hotel_id":request.form.get("hotel_id")})
-
-        
         
         headers = {}
         headers.update({"Authorization": "Bearer "+session['access_token']})
-        headers.update({"Content-Type" : "multipart/form-data"})
         headers.update({"accept": "*/*"})
         
         print(url)
         print(headers)
         
-        response = requests.post(url=url, data=body, headers=headers)
+        response = requests.post(url=url, data=body, files=files, headers=headers)
         
         return redirect(url_for('images'))
     
