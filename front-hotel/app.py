@@ -41,10 +41,13 @@ def home():
         return render_template('home.html', hotels=hotels, rooms=rooms )
     
     if request.method == 'POST':
+        try:
+            if session['authenticated']:
+                room_id = request.form.get("room_id")
 
-        room_id = request.form.get("room_id")
-
-        return render_template('booking.html', room_id=room_id)
+                return render_template('booking.html', room_id=room_id)
+        except:
+            return redirect(url_for('login'))
 
 @app.route('/error')
 def error():

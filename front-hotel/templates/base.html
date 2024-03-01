@@ -6,13 +6,13 @@
 </head>
 <body>
     <div class="ui menu">
-        <a class="header item" href="/home">
+        <a class="header item" name="home" href="/home">
           Home
         </a>
-        <a class="item" href="/user">
+        <a class="item" name="profil" href="/user">
           Profil
         </a>
-        <a class="item" href="/booking">
+        <a class="item" name="reservations" href="/booking">
           my reservations
         </a>
         {% if session["role"] == "employee" or session["role"] == "admin" %}
@@ -28,9 +28,9 @@
                     <button type="submit" class="ui red button">Logout</button>
                   </form>
                   {% else %}
-                  <button onclick="window.location.href = '/login'" class="ui positive button">Login</button>
+                  <button onclick="window.location.href = '/login'" class="ui positive button" name="login">Login</button>
                   <div class="or"></div>
-                  <button onclick="window.location.href = '/register'" class="ui button">Register</button>
+                  <button onclick="window.location.href = '/register'" class="ui button" name="register">Register</button>
                   {% endif %}
                 </div>
             </div>

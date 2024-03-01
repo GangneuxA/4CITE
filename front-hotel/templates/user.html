@@ -9,17 +9,17 @@
     <div class="ui segment">
         <div class="ui grid">
             <div class="twelve wide column">
-                <h3>Pseudo: {{ session.pseudo }}</h3>
-                <p>Email: {{ session.email }}</p>
-                <p>Role: {{ session.role }}</p>
+                <h3 name="pseudo">Pseudo: {{ session.pseudo }}</h3>
+                <p name="email">Email: {{ session.email }}</p>
+                <p name="role">Role: {{ session.role }}</p>
             </div>
             <div class="four wide column">
-                <button onclick="window.location.href = '/change_user'" class="ui icon primary button" >
+                <button name="modified" onclick="window.location.href = '/change_user'" class="ui icon primary button" >
                     <i class="pencil alternate icon"></i>
                     modified
                 </button>
                 <form class="ui form" action="/delete_user" method="post">
-                    <button type="submit" class="ui red button">delete</button>
+                    <button name="delete" type="submit" class="ui red button">delete</button>
                 </form>
             </div>
         </div>
