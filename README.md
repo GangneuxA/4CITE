@@ -7,7 +7,7 @@ our projet follow this shema
 
 ## installation local API back 
 
-create une database mysql.
+create a database mysql.
 
 clone this project
 
@@ -31,6 +31,7 @@ FLASK_ENV = "development"
 FLASK_RUN_PORT = "5000"
 APP_SUPER_KEY="YourSuperKey"
 DEV_DATABASE_URL="mysql+pymysql://root:root@localhost:3306/bookhotel"
+TEST_DATABASE_URL="mysql+pymysql://root:root@localhost:3306/bookhotel"
 ```
 
 in folder back-hotel install the dependance with
@@ -81,16 +82,17 @@ pip install -r requirements.txt
 And for finish juste do a :
 
 ```
-Flask run
+flask run
 ```
 
-Front is available on http://localhost:5000/
+Front is available on http://localhost:5001/
 
 
-## Lauch test  on API hotel in local 
+## Lauch test on API hotel in local 
 
 Enter in venv then go to folder back-hotel
 then create .env in folder back-hotel and edit with your credentials of mysql and create your super key 
+
 ```
 FLASK_APP = "bookhotel.py"
 FLASK_ENV = "development"
