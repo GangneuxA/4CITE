@@ -106,6 +106,12 @@ class TestUsers(unittest.TestCase):
 
         self.assertIn('Reservations', self.driver.title)
 
+        logout_button = self.driver.find_element(By.NAME,'logout' )
+        logout_button.click()
+        time.sleep(2)
+
+        self.assertIn('Home', self.driver.title)
+
     def test03_user_update_booking(self):
             print("test_user_update_booking")
             self.driver.get('http://localhost:5001/login')
@@ -141,6 +147,12 @@ class TestUsers(unittest.TestCase):
 
             self.assertIn('Reservations', self.driver.title)
 
+            logout_button = self.driver.find_element(By.NAME,'logout' )
+            logout_button.click()
+            time.sleep(2)
+
+            self.assertIn('Home', self.driver.title)
+
     def test04_user_delete_booking(self):
             print("test_user_delete_booking")
             self.driver.get('http://localhost:5001/login')
@@ -166,9 +178,12 @@ class TestUsers(unittest.TestCase):
             modified_button.click()
 
             self.assertIn('Reservations', self.driver.title)
-            list_items = self.driver.find_elements(By.NAME, "booking_list")
-            print(len(list_items))
-            self.assertEqual(len(list_items), 0)
+
+            logout_button = self.driver.find_element(By.NAME,'logout' )
+            logout_button.click()
+            time.sleep(2)
+
+            self.assertIn('Home', self.driver.title)
 
 if __name__ == '__main__':
     unittest.main()

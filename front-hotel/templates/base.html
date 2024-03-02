@@ -16,7 +16,7 @@
           my reservations
         </a>
         {% if session["role"] == "employee" or session["role"] == "admin" %}
-        <a class="item" href="/administration">
+        <a class="item" name="administration" href="/administration">
           Administration
         </a>
         {% endif %}
@@ -24,7 +24,7 @@
             <div class="item">
                 <div class="ui buttons">
                   {% if session['authenticated'] == True %}
-                  <form class="ui form" action="/logout" method="post">
+                  <form class="ui form" action="/logout" name="logout" method="post">
                     <button type="submit" class="ui red button">Logout</button>
                   </form>
                   {% else %}

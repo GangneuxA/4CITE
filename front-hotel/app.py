@@ -236,6 +236,9 @@ def change_booking():
 
         response = requests.put(url=url, json=body, headers=HEADERS)
         print("######")
+
+        if session['role'] == 'admin':
+             return redirect(url_for('admin_bookings'))
         return redirect(url_for('booking'))
     
 @app.route('/delete_booking', methods=['POST'])
@@ -248,6 +251,8 @@ def delete_booking():
 
         response = requests.delete(url=url, headers=HEADERS)
 
+        if session['role'] == "admin":
+             return redirect(url_for('admin_bookings'))
         return redirect(url_for('booking'))
     
 @app.route('/admin_hotels', methods=['GET','POST'])
@@ -426,11 +431,12 @@ def change_room():
 
         body = {}
         if request.form.get("number") != "":
-            body.update({"number": request.form.get("number")})
+            body.update({"number": str(request.form.get("number"))})
         if request.form.get("nb_personne") != "":
-            body.update({"nb_personne": request.form.get("nb_personne")})
+            body.update({"nb_personne": int(request.form.get("nb_personne"))})
 
-        response = requests.put(url=url,json=body, headers=HEADERS)
+        print(body)
+        response = requests.put(url=url, json=body, headers=HEADERS)
 
         return redirect(url_for('rooms'))
     
@@ -449,4 +455,5 @@ def delete_room():
 @app.route('/create_room', methods=['GET'])
 def create_room():
     if request.method == 'GET':
-        return render_template('room.html')
+        hotel_id = request.args.get("hotel_id")
+        return render_template('room.html', hotel_id=hotel_id)

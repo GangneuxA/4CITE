@@ -23,11 +23,11 @@
                                 <div class="ui buttons">
                                     <form class="ui form" action="/change_room" method="get">
                                         <input type="hidden" name="room_id" value="{{ room.id }}">
-                                        <button type="submit" class="ui primary button">modified</button>
+                                        <button type="submit" name="change_room" class="ui primary button">modified</button>
                                     </form>
                                     <form class="ui form" action="/delete_room" method="post">
                                         <input type="hidden" name="room_id" value="{{ room.id }}">
-                                        <button type="submit" class="ui negative button">Delete</button>
+                                        <button type="submit" name="delete_room" class="ui negative button">Delete</button>
                                     </form>
                                 </div>
                             </div>
@@ -37,7 +37,6 @@
             </div>
         {% endfor %}
     </div>
-    <button onclick="window.location.href = '/create_room'" class="ui button">Create New room</button>
 </div>
 
 

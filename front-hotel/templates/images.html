@@ -20,7 +20,7 @@
                         <form action="/delete_image" method="post">
                             <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
                             <input type="hidden" name="image_id" value="{{ data['id'] }}">
-                            <button class="ui red button" type="submit">delete</button>
+                            <button class="ui red button" name="submit_delete" type="submit">delete</button>
                         </form>
                     </div>
                 {% endfor %}                    
@@ -28,7 +28,7 @@
                     <form action="/images" method="post" enctype="multipart/form-data">
                         <input type="file" name="image" accept="image/*" required>
                         <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
-                        <button class="ui primary button" type="submit">Add image</button>
+                        <button class="ui primary button" name="submit_add" type="submit">Add image</button>
                     </form>
                 </div>
             </div>

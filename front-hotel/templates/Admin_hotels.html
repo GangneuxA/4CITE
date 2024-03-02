@@ -16,22 +16,27 @@
                     <p>{{ hotel.location }}</p>
                     <p>{{ hotel.description }}</p>
                 </div>
-                <!-- Formulaire pour le bouton Modifier -->
+
                 <form action="/change_hotel" method="get" style="display: inline;">
                     <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
-                    <button class="ui primary button" type="submit">Modifier</button>
+                    <button class="ui primary button" name="change_hotel" type="submit">Modifier</button>
                 </form>
 
-                <!-- Formulaire pour le bouton Supprimer -->
+
                 <form action="/delete_hotel" method="post" style="display: inline;">
                     <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
-                    <button class="ui red button" type="submit">Supprimer</button>
+                    <button class="ui red button" name="delete_hotel" type="submit">Supprimer</button>
+                </form>
+
+                <form action="/create_room" method="get" style="display: inline;">
+                    <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
+                    <button class="ui primary button" name="create_room" type="submit">create new room</button>
                 </form>
             </div>
         </div>
         {% endfor %}
     </div>
-    <button onclick="window.location.href = '/hotel'" class="ui button">Create New Hotel</button>
+    <button onclick="window.location.href = '/hotel'" name="create_hotel" class="ui button">Create New Hotel</button>
 </div>
 
 {% endblock %}

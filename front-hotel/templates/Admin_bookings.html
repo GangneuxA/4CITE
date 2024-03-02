@@ -21,11 +21,11 @@
                     <div class="extra">
                         <form class="ui form" action="/change_booking" method="get">
                             <input type="hidden" name="booking" value="{{ reservation }}">
-                            <button type="submit" class="ui primary button">modified</button>
+                            <button type="submit" name="change_booking" class="ui primary button">modified</button>
                         </form>
                         <form class="ui form" action="/delete_booking" method="post">
                             <input type="hidden" name="booking_id" value="{{ reservation.id }}">
-                            <button type="submit" class="ui negative button">Delete</button>
+                            <button type="submit" name="delete_booking" class="ui negative button">Delete</button>
                         </form>
                     </div>
                 </div>
