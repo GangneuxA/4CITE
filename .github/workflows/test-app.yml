@@ -73,17 +73,17 @@ jobs:
       run: |
         sudo mysql --host=127.0.0.1 --user=root --password=root bookhotel < bdd_test.sql
     - name: Run flask back
-        run: |
-          cd back-hotel
-          flask run
+      run: |
+        cd back-hotel
+        flask run
     - name: Run flask front
-        run: |
-          cd front-hotel
-          flask run
+      run: |
+        cd front-hotel
+        flask run
     - name: e2e test
-        run: |
-          cd front-hotel
-          python -m unittest test.test_admin
+      run: |
+        cd front-hotel
+        python -m unittest test.test_admin
     - name: deploy
       run: |
         echo "deploy back api"
