@@ -72,6 +72,20 @@ jobs:
     - name: prepare e2e test
       run: |
         sudo mysql --host=127.0.0.1 --user=root --password=root bookhotel < bdd_test.sql
+    - name: Run flask back
+      run: |
+        cd back-hotel
+        flask run
+      background: true
+    - name: Run flask front
+      run: |
+        cd front-hotel
+        flask run --host=0.0.0.0 --port=5001
+      background: true
+    - name: e2e test
+      run: |
+        cd front-hotel
+        python -m unittest test.test_admin
     - name: deploy
       run: |
         echo "deploy back api"
