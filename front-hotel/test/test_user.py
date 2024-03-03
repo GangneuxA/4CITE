@@ -13,6 +13,75 @@ class TestUsers(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
+    def add_hotel_rooms(self):
+        self.driver.get('http://localhost:5001/login')
+
+        email_input = self.driver.find_element(By.NAME,'email' )
+        email_input.send_keys('admin.admin@admin.fr')
+
+        password_input = self.driver.find_element(By.NAME,'password' )
+        password_input.send_keys('admin')
+
+        submit_button = self.driver.find_element(By.NAME,'submit' )
+        submit_button.click()
+        time.sleep(2)
+
+        self.assertIn('Home', self.driver.title)
+
+        administration_button = self.driver.find_element(By.NAME,'administration' )
+        administration_button.click()
+
+        self.assertIn('Administration', self.driver.title)
+
+        admin_hotels_button = self.driver.find_element(By.NAME,'admin_hotels' )
+        admin_hotels_button.click()
+        time.sleep(2)
+
+        self.assertIn('Admin_hotels', self.driver.title)
+
+        admin_create_hotels_button = self.driver.find_element(By.NAME,'create_hotel' )
+        admin_create_hotels_button.click()
+
+        self.assertIn('Hotel', self.driver.title)
+
+        name_input = self.driver.find_element(By.NAME,'name' )
+        name_input.send_keys('HotelTestforUser')
+
+        description_input = self.driver.find_element(By.NAME,'description' )
+        description_input.send_keys('descriptiontest')
+
+        location_input = self.driver.find_element(By.NAME,'location' )
+        location_input.send_keys('Tours')
+
+        submit_button = self.driver.find_element(By.NAME,'submit' )
+        submit_button.click()
+        time.sleep(2)
+
+        self.assertIn('Admin_hotels', self.driver.title)
+
+        admin_create_room_button = self.driver.find_element(By.NAME,'create_room' )
+        admin_create_room_button.click()
+
+        self.assertIn('Rooms', self.driver.title)
+
+        number_input = self.driver.find_element(By.NAME,'numero' )
+        number_input.send_keys(666)
+
+        nb_personne_input = self.driver.find_element(By.NAME,'nb_personne' )
+        nb_personne_input.send_keys(2)
+
+        submit_button = self.driver.find_element(By.NAME,'submit' )
+        submit_button.click()
+        time.sleep(2)
+
+        self.assertIn('Admin_rooms', self.driver.title)
+
+        logout_button = self.driver.find_element(By.NAME,'logout' )
+        logout_button.click()
+        time.sleep(2)
+
+        self.assertIn('Home', self.driver.title)
+
     def test01_user_profil(self):
         print("test_user_profil")
         register_button = self.driver.find_element(By.NAME,'register' )
@@ -184,6 +253,46 @@ class TestUsers(unittest.TestCase):
             time.sleep(2)
 
             self.assertIn('Home', self.driver.title)
+
+    def test05_delete_hotel_admin(self):
+
+        self.driver.get('http://localhost:5001/login')
+
+        email_input = self.driver.find_element(By.NAME,'email' )
+        email_input.send_keys('admin.admin@admin.fr')
+
+        password_input = self.driver.find_element(By.NAME,'password' )
+        password_input.send_keys('admin')
+
+        submit_button = self.driver.find_element(By.NAME,'submit' )
+        submit_button.click()
+        time.sleep(2)
+
+        self.assertIn('Home', self.driver.title)
+         
+        administration_button = self.driver.find_element(By.NAME,'administration' )
+        administration_button.click()
+
+        self.assertIn('Administration', self.driver.title)
+
+        admin_hotels_button = self.driver.find_element(By.NAME,'admin_hotels' )
+        admin_hotels_button.click()
+        time.sleep(2)
+
+        self.assertIn('Admin_hotels', self.driver.title)
+
+        admin_delete_hotels_button = self.driver.find_element(By.NAME,'delete_hotel' )
+        admin_delete_hotels_button.click()
+
+        self.assertIn('Admin_hotels', self.driver.title)
+        time.sleep(2)
+
+        logout_button = self.driver.find_element(By.NAME,'logout' )
+        logout_button.click()
+        time.sleep(2)
+
+        self.assertIn('Home', self.driver.title)
+
 
 if __name__ == '__main__':
     unittest.main()
