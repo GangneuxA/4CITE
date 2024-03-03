@@ -76,10 +76,12 @@ jobs:
       run: |
         cd back-hotel
         flask run
+      background: true
     - name: Run flask front
       run: |
         cd front-hotel
-        flask run
+        flask run --host=0.0.0.0 --port=5001
+      background: true
     - name: e2e test
       run: |
         cd front-hotel
