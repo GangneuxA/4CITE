@@ -72,7 +72,7 @@ jobs:
     - name: prepare e2e test
       run: |
         sudo mysql --host=127.0.0.1 --user=root --password=root bookhotel < bdd_test.sql
-        cd back-hotel
+        cd front-hotel
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi 
     - name: Run flask back
       run: |
