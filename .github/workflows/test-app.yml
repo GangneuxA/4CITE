@@ -69,30 +69,6 @@ jobs:
       run: |
         cd back-hotel
         python -m unittest test.test_integration
-    - name: prepare e2e test
-      run: |
-        sudo mysql --host=127.0.0.1 --user=root --password=root bookhotel < bdd_test.sql
-        cd front-hotel
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi 
-    - name: Run flask back
-      run: |
-        cd back-hotel
-        flask run &
-
-    - name: Run flask front
-      run: |
-        cd front-hotel
-        flask run &
-      env:
-        FLASK_APP: app.py
-        FLASK_ENV: development
-        FLASK_PORT: 5001
-
-    - name: e2e test
-      run: |
-        cd front-hotel
-        pwd
-        python -m unittest test.test_admin
     - name: deploy
       run: |
         echo "deploy back api"

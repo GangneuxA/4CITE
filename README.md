@@ -88,7 +88,7 @@ flask run
 Front is available on http://localhost:5001/
 
 
-## Lauch test on API hotel in local 
+## Lauch test on API hotel in localy
 
 Enter in venv then go to folder back-hotel
 then create .env in folder back-hotel and edit with your credentials of mysql and create your super key 
@@ -101,7 +101,7 @@ APP_SUPER_KEY="YourSuperKey"
 DEV_DATABASE_URL="mysql+pymysql://root:root@localhost:3306/bookhotel"
 ```
 
-for lauch the test 
+for launch the test 
 ```
 python -m unittest test.<Name of wish test>
 ```
@@ -117,3 +117,33 @@ each model test GET, POST, PUT and DELETE
 For test of integration 
     * test_integration
 there are tests of scenario using different object user, hotel, chambres, image and booking
+
+## Lauch test on front hotel in localy
+
+require to launch back-api and install web browser create with chronium (exemple: chrome , brave ...)
+
+Enter in venv then go to folder front-hotel
+then create .env in folder lancer and edit with your credentials of mysql and create your super key 
+
+```
+FLASK_APP = "app.py"
+FLASK_ENV = "development"
+FLASK_RUN_PORT = "5001"
+```
+
+next launch app
+```
+pip install -r requirements.txt
+flask run
+```
+
+commande to launch the test 
+```
+python -m unittest test.<Name of wish test>
+```
+
+it exists this list of e2e test
+    * test_unitaire_user
+    * test_unitaire_employee
+    * test_unitaire_anonymous
+    * test_unitaire_admin
