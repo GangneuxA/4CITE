@@ -1,7 +1,6 @@
 import datetime
 import json
 from flask import Flask, flash, redirect, render_template, request, url_for, session
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
 import requests
 import os
 

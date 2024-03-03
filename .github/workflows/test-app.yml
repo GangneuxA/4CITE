@@ -72,7 +72,7 @@ jobs:
     - name: prepare e2e test
       run: |
         sudo mysql --host=127.0.0.1 --user=root --password=root bookhotel < bdd_test.sql
-        
+
     - name: Run flask back
       run: |
         cd back-hotel
@@ -90,6 +90,7 @@ jobs:
     - name: e2e test
       run: |
         cd front-hotel
+        pwd
         python -m unittest test.test_admin
     - name: deploy
       run: |
