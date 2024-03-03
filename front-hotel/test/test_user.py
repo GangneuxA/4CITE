@@ -13,7 +13,7 @@ class TestUsers(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
-    def add_hotel_rooms(self):
+    def test00_add_hotel_rooms(self):
         self.driver.get('http://localhost:5001/login')
 
         email_input = self.driver.find_element(By.NAME,'email' )
