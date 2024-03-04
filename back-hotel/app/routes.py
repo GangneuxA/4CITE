@@ -368,3 +368,7 @@ def delete_booking(id):
         return jsonify({'result': True}), 200
     else: 
         return jsonify({'error': 'You have not the permission for modify this'}), 404
+    
+if __name__ == "__main__":
+    print("passe")
+    app.run(host="127.0.0.1",threaded=True)

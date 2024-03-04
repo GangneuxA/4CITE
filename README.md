@@ -41,6 +41,8 @@ Create tables of database with
 ```
 flask db upgrade
 ```
+if you want users exemples import bdd_test.sql in our database.
+you have 3 users for exemple with different roles (user,employee,admin)
 
 Launch project with 
 ```
