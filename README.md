@@ -11,9 +11,7 @@ create a database mysql.
 
 clone this project
 
-in root of project
-
-create venv with this command :
+open a terminal in the root of project and create venv with this command :
 ```
 python3 -m venv .venv
 ```
@@ -103,27 +101,28 @@ DEV_DATABASE_URL="mysql+pymysql://root:root@localhost:3306/bookhotel"
 
 for launch the test 
 ```
-python -m unittest test.<Name of wish test>
+python -m unittest test.<Name file of wish test> 
 ```
+(without .py)
 
 it exists this list of unit test
-    * test_unitaire_booking
-    * test_unitaire_hotel
-    * test_unitaire_chambres
-    * test_unitaire_user
-    * test_unitaire_image
+* test_unitaire_booking
+* test_unitaire_hotel
+* test_unitaire_chambres
+* test_unitaire_user
+* test_unitaire_image
 each model test GET, POST, PUT and DELETE
 
 For test of integration 
-    * test_integration
+* test_integration
 there are tests of scenario using different object user, hotel, chambres, image and booking
 
 ## Lauch test on front hotel in localy
 
-require to launch back-api and install web browser create with chronium (exemple: chrome , brave ...)
+require to launch back-api and install web browser driver with chronium (exemple: chrome , brave ...)
 
 Enter in venv then go to folder front-hotel
-then create .env in folder lancer and edit with your credentials of mysql and create your super key 
+then create .env in folder and edit with your credentials of mysql and create your super key 
 
 ```
 FLASK_APP = "app.py"
@@ -139,11 +138,12 @@ flask run
 
 commande to launch the test 
 ```
-python -m unittest test.<Name of wish test>
+python -m unittest test.<Name file of wish test>
 ```
+(without .py)
 
 it exists this list of e2e test
-    * test_unitaire_user
-    * test_unitaire_employee
-    * test_unitaire_anonymous
-    * test_unitaire_admin
+* test_unitaire_user
+* test_unitaire_employee
+* test_unitaire_anonymous
+* test_unitaire_admin
