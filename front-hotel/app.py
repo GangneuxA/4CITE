@@ -456,3 +456,6 @@ def create_room():
     if request.method == 'GET':
         hotel_id = request.args.get("hotel_id")
         return render_template('room.html', hotel_id=hotel_id)
+    
+if __name__ == "__main__":
+    app.run(host="127.0.0.1",threaded=True)
